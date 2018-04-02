@@ -1,5 +1,5 @@
 # SCA-CNN
-Pytorch Implementation of SCA-CNN[1] 
+Tensorflow Implementation of SCA-CNN[1] 
 
 TODO
 
