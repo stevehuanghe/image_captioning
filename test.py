@@ -17,7 +17,6 @@ from models.ssa import SSA
 from models.nic import NIC
 from models.scacnn import SCACNN
 
-import crash_on_ipy
 
 args = parser.parse_args()
 print_args(args)
