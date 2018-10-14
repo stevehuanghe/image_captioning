@@ -1,6 +1,6 @@
 # Image Captioning Models
 
-Some code is borrowed from https://github.com/yunjey/pytorch-tutorial/tutorials/03-advanced/image_captioning/
+Some code is borrowed from https://github.com/yunjey/pytorch-tutorial/tree/master/tutorials/03-advanced/image_captioning
 
 
 
