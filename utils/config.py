@@ -41,12 +41,12 @@ parser.add_argument('--num_workers', type=int, default=4,
                     help='number of workers for data loader')
 parser.add_argument('--vocab_path', type=str, default='./data/vocab.pkl',
                     help='path for vocabulary wrapper')
-parser.add_argument('--train_image_dir', type=str, default='./data/train2014_resized',
+parser.add_argument('--train_image_dir', type=str, default='./data/train2014',
                     help='directory for train resized images')
 parser.add_argument('--train_caption_path', type=str,
                     default='./data/annotations/captions_train2014.json',
                     help='path for train annotation json file')
-parser.add_argument('--val_image_dir', type=str, default='./data/val2014_resized',
+parser.add_argument('--val_image_dir', type=str, default='./data/val2014',
                     help='directory for val resized images')
 parser.add_argument('--val_caption_path', type=str,
                     default='./data/annotations/captions_val2014.json',

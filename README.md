@@ -25,7 +25,6 @@ $ pip install -r requirements.txt
 $ chmod +x download.sh
 $ ./download.sh
 $ python build_vocab.py   
-$ python resize.py
 ```
 ### train the model
 
@@ -61,7 +60,7 @@ The models were run on a NVIDIA TITAN X Pascal GPU with 12GB memory.
 
 |        | BLEU-1 | BLEU-2 | BLEU-3 | BLEU-4 | METEOR | Rouge | CIDEr | SPICE | Train epoch |
 |:------:|:------:|:------:|:------:|:------:|:------:|:-----:|:-----:|:-----:|:-----:|
-| NIC    |66.6    | 46.1   |  32.9  |  24.6  |-       | -     | -     | -     | -     |   
+| NIC    |66.6    | 46.1   |  32.9  |  24.6  |-       | -     | -     | -     | -     |
 |NIC re  | 67.9   |  50.1  |35.7    |  25.3  |   23.2 |  50.1 | 80.4  |  16   |   10  |
 |NIC re (bs)| 66.4|48.9| 35.8| 26.2 | 24.2|50.7|  83  |  16.7 |10|
 |SA | 70.7 | 49.2 | 34.4 | 24.3 | 23.9 | -  | - | - | -  |
