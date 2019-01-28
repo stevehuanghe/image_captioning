@@ -5,7 +5,7 @@ Some code is borrowed from https://github.com/yunjey/pytorch-tutorial/tree/maste
 Here are the implementations of Google-NIC[3], soft-attention[2] and SCA-CNN[1] with PyTorch and Python3.
 
 For SCA-CNN, I do not have time to implement multi-layer attention, so I just use output of the last layer of resnet152 as 
-image features.
+image features. (I will keep implementing full SCA-CNN.)
 
 ## Usage:
 
@@ -72,7 +72,7 @@ For NIC, since I use a better feature extractor (ResNet152) than the paper [3] (
 
 For soft-attention (SA), I did not train the model long enough, so its performance is slightly worse than the scores reported in [2].
 
-For SCA-CNN, my results are much worse than the original results in all the evaluation metrics, which is because of the limitation of GPU memory. For one image, its visual feature is of size 2048*7*7, and the original hidden dimension of LSTM in [1] is 1000. Hence, the size of the weight matrix which is used to transfer image features as LSTM input is around 400MB. When we unroll the LSTM for back-propagation, the model needs to store both gradients and errors for this matrix in each time-step (the maximum time-step is 20). Therefore, the peak memory cost is 400MB * 20 * 2 = 16GB. Since I only have one GPU with 12 GB memory for the experiments, I could not run this model in the original setting successfully. Instead I changed the hidden dimension of LSTM from 1000 to 300, which makes the performance much worse than the original paper. In my experiments, I could only afford to run with a really small batch size of 20. 
+For SCA-CNN, my results are much worse than the original results in all the evaluation metrics, which is because of the limitation of GPU memory. For one image, its visual feature is of size 2048x7x7, and the original hidden dimension of LSTM in [1] is 1000. Hence, the size of the weight matrix which is used to transfer image features as LSTM input is around 400MB. When we unroll the LSTM for back-propagation, the model needs to store both gradients and errors for this matrix in each time-step (the maximum time-step is 20). Therefore, the peak memory cost is 400MB * 20 * 2 = 16GB. Since I only have one GPU with 12 GB memory for the experiments, I could not run this model in the original setting successfully. Instead I changed the hidden dimension of LSTM from 1000 to 300, which makes the performance much worse than the original paper. In my experiments, I could only afford to run with a really small batch size of 20. 
 
 
 ## References
