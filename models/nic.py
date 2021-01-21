@@ -103,7 +103,7 @@ class NIC(nn.Module):
         feats = features.view(1, batch_size, -1)
 
         hidden, states = self.lstm(feats)
-        word = Variable(torch.Tensor([start_token]).repeat(batch_size, 0).long(), requires_grad=False)
+        word = Variable(torch.Tensor([start_token]).repeat(batch_size, 1).long(), requires_grad=False)
         if torch.cuda.is_available():
             word = word.cuda()
         word_embeds = self.embed(word).view(1, batch_size, -1)

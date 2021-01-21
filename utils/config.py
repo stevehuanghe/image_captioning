@@ -19,7 +19,7 @@ parser.add_argument('--save_step', type=int, default=1,
 parser.add_argument('--log_file', type=str, default='log.txt',
                     help='path for test output json file')
 parser.add_argument('--beam_width', type=int, default=1,
-                    help='beam width of beam search')
+                    help='beam width of beam search, default is 1, ie, greedy search')
 # flags
 parser.add_argument('--restore_train', action='store_true',
                     help='set this flag to restore training from previous checkponts')

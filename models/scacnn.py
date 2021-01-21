@@ -148,7 +148,7 @@ class SCACNN(nn.Module):
         seq_max_len = 20
         hidden = Variable(torch.zeros(batch_size, self.lstm_dim), requires_grad=False)
         states = None
-        word = Variable(torch.Tensor([start_token]).repeat(batch_size, 0).long(), requires_grad=False)
+        word = Variable(torch.Tensor([start_token]).repeat(batch_size, 1).long(), requires_grad=False)
         if torch.cuda.is_available():
             hidden = hidden.cuda()
             word = word.cuda()
@@ -191,7 +191,7 @@ class SCACNN(nn.Module):
 
         feats = features.reshape(1, batch_size, -1)
 
-        hidden, states = self.lstm(feats)
+        hidden = Variable(torch.zeros(batch_size, self.lstm_dim), requires_grad=False)
         words = Variable(torch.Tensor([start_token]).long(), requires_grad=False).repeat(batch_size).view(batch_size, 1,
                                                                                                           1)
         probs = Variable(torch.zeros(batch_size, 1))  # [batch, beam]

@@ -95,7 +95,7 @@ def main():
         exit(-2)
 
     net.eval()
-    
+
     logger.info('restoring pretrained checkpoint...')
     net.load_state_dict(checkpoint['net_state'])
 
@@ -117,6 +117,7 @@ def main():
         if args.beam_width == 1:
             results = net.greedy_search(images, start_token).data.cpu().numpy()
         else:
+            print("warning: greed search for scacnn and ssa not working yet...")
             results = net.beam_search(images, start_token, beam_width=args.beam_width).data.cpu().numpy()
 
         results = list(results)  # each element is [seq_len, 1]
