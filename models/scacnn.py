@@ -95,10 +95,10 @@ class SCACNN(nn.Module):
         """Extract the image feature vectors."""
         batch_size = images.size()[0]
         features = self.resnet(images)
-        features = Variable(features.data)
+        # features = Variable(features.data)
         features = features.view(batch_size, 2048, 49).permute(0, 2, 1)  # [batch, 49, 2048]
 
-        embeddings = self.embed(captions).permute(1, 0, 2)  # [length, batch, embed_dim]
+        embeddings = self.embed(captions).permute(1, 0, 2).contiguous()  # [length, batch, embed_dim]
         embeddings = torch.split(embeddings, 1)
 
         logits = []
@@ -127,7 +127,7 @@ class SCACNN(nn.Module):
                 beta = self.channel_attention(features, hidden)
                 feats = beta * features
 
-            feats = feats.view(1, batch_size, -1)
+            feats = feats.reshape(1, batch_size, -1).contiguous()
             embed = embeddings[t]
             inputs = torch.cat([embed, feats], dim=2)
             hidden, states = self.lstm(inputs, states)
@@ -170,7 +170,7 @@ class SCACNN(nn.Module):
                 features = alpha * features
                 beta = self.channel_attention(features, hidden)
                 feats = beta * features
-            feats = feats.view(1, batch_size, -1)
+            feats = feats.reshape(1, batch_size, -1)
             embed = self.embed(word).view(1, batch_size, -1)
             inputs = torch.cat([embed, feats], dim=2)
             hidden, states = self.lstm(inputs, states)
@@ -189,7 +189,7 @@ class SCACNN(nn.Module):
         features = Variable(features.data)
         features = features.view(batch_size, 2048, 49).permute(0, 2, 1)  # [batch, 49, 2048]
 
-        feats = features.view(1, batch_size, -1)
+        feats = features.reshape(1, batch_size, -1)
 
         hidden, states = self.lstm(feats)
         words = Variable(torch.Tensor([start_token]).long(), requires_grad=False).repeat(batch_size).view(batch_size, 1,
@@ -231,7 +231,7 @@ class SCACNN(nn.Module):
                     features = alpha * features
                     beta = self.channel_attention(features, hidden)
                     feats = beta * features
-                feats = feats.view(1, batch_size, -1)
+                feats = feats.reshape(1, batch_size, -1)
                 embed = self.embed(last_word).view(1, batch_size, -1).contiguous()
                 inputs = torch.cat([embed, feats], dim=2)
 
