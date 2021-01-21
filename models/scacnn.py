@@ -187,8 +187,7 @@ class SCACNN(nn.Module):
 
         features = self.resnet(images)
         features = Variable(features.data)
-        features = features.view(features.size(0), -1)
-        features = self.bn(self.linear(features))
+        features = features.view(batch_size, 2048, 49).permute(0, 2, 1)  # [batch, 49, 2048]
 
         feats = features.view(1, batch_size, -1)
 

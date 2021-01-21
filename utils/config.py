@@ -56,7 +56,7 @@ parser.add_argument('--val_caption_path', type=str,
 # Model
 parser.add_argument('--model', type=str, default='nic', choices=['nic', 'ssa', 'scacnn'],
                     help='name for model')
-parser.add_argument('--att_mode', type=str, default='cs', choices=['cs', 'sc'],
+parser.add_argument('--att_mode', type=str, default='cs', choices=['cs', 'sc', 'c', 's'],
                     help='attention mode for scacnn')
 parser.add_argument('--embed_size', type=int, default=100,
                     help='dimension of word embedding vectors')

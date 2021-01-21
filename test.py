@@ -60,22 +60,44 @@ def main():
                                         transform, args.batch_size,
                                         shuffle=False, num_workers=args.num_workers, is_eval=True)
 
-    logger.info('building model...')
+    
     # Build the models
     vocab_size = len(vocab)
-
+    
+    
+    if not os.path.isfile(args.ckpt_path):
+            print('checkpoint not found: ', args.ckpt_path)
+            exit(-1)
+    checkpoint = torch.load(args.ckpt_path)
+    
+    epoch = checkpoint['epoch']
+    args_dict = checkpoint['args']
+    args.batch_size = args_dict['batch_size']
+    args.learning_rate = args_dict['learning_rate']
+    args.att_mode = args_dict['att_mode']
+    args.model = args_dict['model']
+    args.embed_size = args_dict['embed_size']
+    args.hidden_size = args_dict['hidden_size']
+    args.num_layers = args_dict['num_layers']
+    print('using loaded args from checkpoint:')
+    pprint(args)
+    
+    logger.info('building model...')
     if args.model == 'ssa':
         net = SSA(embed_dim=args.embed_size, lstm_dim=args.hidden_size, vocab_size=vocab_size)
     elif args.model == 'nic':
         net = NIC(embed_dim=args.embed_size, lstm_dim=args.hidden_size, vocab_size=vocab_size)
     elif args.model == 'scacnn':
-        net = SCACNN(embed_dim=args.embed_size, lstm_dim=args.hidden_size, vocab_size=vocab_size)
+        net = SCACNN(embed_dim=args.embed_size, lstm_dim=args.hidden_size, vocab_size=vocab_size, att_mode=args.att_mode)
     else:
         net = None
         print('model name not found: ' + args.model)
         exit(-2)
 
     net.eval()
+    
+    logger.info('restoring pretrained checkpoint...')
+    net.load_state_dict(checkpoint['net_state'])
 
     if torch.cuda.is_available():
         if torch.cuda.device_count() > 1:
@@ -83,25 +105,7 @@ def main():
         net.cuda()
 
     net.zero_grad()
-    logger.info('restoring pretrained model...')
-    checkpoint = torch.load(args.ckpt_path)
-    try:
-        args_dict = checkpoint['args']
-        args.batch_size = args_dict['batch_size']
-        args.learning_rate = args_dict['learning_rate']
-        args.att_mode = args_dict['att_mode']
-        args.model = args_dict['model']
-        args.embed_size = args_dict['embed_size']
-        args.hidden_size = args_dict['hidden_size']
-        args.num_layers = args_dict['num_layers']
-        net.load_state_dict(checkpoint['net_state'])
-        epoch = checkpoint['epoch']
-        print('using loaded args from checkpoint:')
-        pprint(args)
-    except:
-        net.load_state_dict(checkpoint)
-        epoch = 0
-
+    
     logger.info('start generating captions...')
     total_step = len(data_loader)
     start_token = vocab('<start>')
